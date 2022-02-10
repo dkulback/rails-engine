@@ -1,18 +1,19 @@
 require 'rails_helper'
 
-RSpec.describe 'Merchants API', type: :request do
+RSpec.describe 'Merchant Search API', type: :request do
   # initialize test data
-  let!(:merchants) { create_list(:merchant, 10) }
-  let(:merchant_id) { merchants.first.id }
 
   describe 'GET api/v1/merchants/find' do
-    before { get api_v1_merchants_find_path, params: { name: merchants.first.name } }
-    it 'returns the merchant(s) with that name' do
+    it 'returns the best first merchant matching the search' do
+      merchant_1 = Merchant.create!(name: 'Turing')
+      merchant_1 = Merchant.create!(name: 'A Merchant')
+      merchant_1 = Merchant.create!(name: 'Ring World')
+      merchant_1 = Merchant.create!(name: 'New Merchant')
+      get api_v1_merchants_find_path, params: { name: 'ring' }
       merchant = JSON.parse(response.body, symbolize_names: true)[:data]
-
       expect(merchant[:type]).to eq('merchant')
       expect(merchant[:id]).to be_a String
-      expect(merchant[:attributes][:name]).to be_a String
+      expect(merchant[:attributes][:name]).to eq('Ring World')
     end
     context 'when it cant find a merchant' do
       before { get api_v1_merchants_find_path, params: { name: 'NOTAMERCHANT' } }
