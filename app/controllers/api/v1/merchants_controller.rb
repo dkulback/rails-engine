@@ -5,18 +5,7 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def show
-    json_response(@merchant)
-  end
-
-  def find
-    merchant = Merchant.search(params[:name])
-    if merchant.nil?
-      render json: {
-        data: { message: 'Unable to find Merchant' }
-      }, status: 404
-    else
-      json_response(merchant)
-    end
+    render json: MerchantSerializer.single_merchant(@merchant), status: :ok
   end
 
   private

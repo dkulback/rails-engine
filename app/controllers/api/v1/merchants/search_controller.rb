@@ -6,7 +6,7 @@ class Api::V1::Merchants::SearchController < ApplicationController
         data: { message: 'Unable to find Merchant' }
       }, status: 404
     else
-      json_response(merchant)
+      render json: MerchantSerializer.single_merchant(merchant), status: :ok
     end
   end
 end

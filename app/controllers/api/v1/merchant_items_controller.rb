@@ -1,7 +1,7 @@
 class Api::V1::MerchantItemsController < ApplicationController
   before_action :set_merchant
   def index
-    json_merch_items(@merchant.items)
+    render json: ItemSerializer.new(@merchant.items), status: :ok
   end
 
   private
