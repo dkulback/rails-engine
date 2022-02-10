@@ -68,7 +68,12 @@ RSpec.describe 'Items API', type: :request do
       end
 
       it 'returns a failure message' do
-        expect(response.body).to match(/Validation failed: Name can't be blank, Unit price can't be blank, Description can't be blank/)
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(json[:message]).to match(/your query could not be completed/)
+        expect(json[:errors].count).to eq(3)
+        expect(json[:errors][0]).to eq("Name can't be blank")
+        expect(json[:errors][1]).to eq("Unit price can't be blank")
+        expect(json[:errors][2]).to eq("Description can't be blank")
       end
     end
   end
