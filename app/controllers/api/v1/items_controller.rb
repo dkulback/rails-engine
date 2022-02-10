@@ -5,12 +5,12 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def show
-    json_item_response(@item)
+    render json: ItemSerializer.single_item(@item)
   end
 
   def create
     item = Item.create!(item_params)
-    json_item_response(item, :created)
+    render json: ItemSerializer.single_item(item), status: :created
   end
 
   def destroy
@@ -21,7 +21,7 @@ class Api::V1::ItemsController < ApplicationController
   def update
     @item.update(item_params)
     if @item.save
-      json_item_response(@item)
+      render json: ItemSerializer.single_item(@item)
     else
       render status: 404
     end
