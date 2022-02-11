@@ -1,10 +1,6 @@
 class Api::V1::ItemsMerchantController < ApplicationController
   def index
     @item = Item.find(params[:item_id])
-    if @item
-      json_response(@item.merchant)
-    else
-      json_response(@item)
-    end
+    render json: MerchantSerializer.single_merchant(@item.merchant), status: :ok if @item
   end
 end

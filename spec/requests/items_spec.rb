@@ -68,7 +68,12 @@ RSpec.describe 'Items API', type: :request do
       end
 
       it 'returns a failure message' do
-        expect(response.body).to match(/Validation failed: Name can't be blank, Unit price can't be blank, Description can't be blank/)
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(json[:message]).to match(/your query could not be completed/)
+        expect(json[:errors].count).to eq(3)
+        expect(json[:errors][0]).to eq("Name can't be blank")
+        expect(json[:errors][1]).to eq("Unit price can't be blank")
+        expect(json[:errors][2]).to eq("Description can't be blank")
       end
     end
   end
@@ -94,78 +99,6 @@ RSpec.describe 'Items API', type: :request do
 
       it 'returns status code 404' do
         expect(response).to have_http_status(404)
-      end
-    end
-  end
-  describe '/api/v1/items/find_all' do
-    context 'when search is valid' do
-      it 'returns the items containting that item name' do
-        merchant = Merchant.create!(name: 'Merchant Name')
-        Item.create!(name: 'Item cool', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-        Item.create!(name: 'wonderful Item Nemo', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-        Item.create!(name: 'excellent Item Nemo', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-        Item.create!(name: 'Nemo', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-
-        get api_v1_items_find_all_path, params: { name: 'item' }
-        items = JSON.parse(response.body, symbolize_names: true)[:data]
-        item = items.first[:attributes]
-        expect(items.count).to eq(3)
-        expect(item).to have_key(:name)
-        expect(item).to have_key(:unit_price)
-        expect(item).to have_key(:merchant_id)
-        expect(item[:name]).to be_a String
-        expect(item[:unit_price]).to be_a Float
-        expect(item[:merchant_id]).to be_a Integer
-      end
-    end
-    context 'when it cant find a item' do
-      it 'returns unable to find item' do
-        merchant = Merchant.create!(name: 'Merchant Name')
-        Item.create!(name: 'Item cool', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-        Item.create!(name: 'wonderful Item Nemo', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-        Item.create!(name: 'excellent Item Nemo', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-        Item.create!(name: 'Nemo', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-
-        get api_v1_items_find_all_path, params: { name: 'jakdkmsj' }
-        json = JSON.parse(response.body, symbolize_names: true)
-        expect(json[:data]).to match([])
-      end
-      it 'has a status code 200' do
-        merchant = Merchant.create!(name: 'Merchant Name')
-        Item.create!(name: 'Item cool', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-        Item.create!(name: 'wonderful Item Nemo', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-        Item.create!(name: 'excellent Item Nemo', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-        Item.create!(name: 'Nemo', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-
-        get api_v1_items_find_all_path, params: { name: '289378' }
-        expect(response).to have_http_status(200)
-      end
-      it 'wont let search field be blank' do
-        merchant = Merchant.create!(name: 'Merchant Name')
-        Item.create!(name: 'Item cool', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-        Item.create!(name: 'wonderful Item Nemo', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-        Item.create!(name: 'excellent Item Nemo', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-        Item.create!(name: 'Nemo', description: 'Sunt...',
-                     unit_price: 42.91, merchant_id: merchant.id)
-
-        get api_v1_items_find_all_path, params: { name: '' }
-        json = JSON.parse(response.body, symbolize_names: true)
-        expect(json[:data][:message]).to eq('NAME CANT BE BLANK')
       end
     end
   end
