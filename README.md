@@ -5,7 +5,7 @@ Rails Engine is a rails API created for consumption by a front-end client. It
 has a total of 10 end points to retrieve data on an e-commerce database.
 
 * Schema Design
-
+https://user-images.githubusercontent.com/69017022/149015318-2036799e-81a2-4692-b9d8-123746be1f27.png
 Ruby/Rails Versions
 
  Ruby - 2.7.4
