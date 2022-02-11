@@ -24,5 +24,14 @@ RSpec.describe 'Merchant Search API', type: :request do
         expect(response).to have_http_status(404)
       end
     end
+    context 'when the search field is blank' do
+      before { get api_v1_merchants_find_path, params: { name: '' } }
+      it 'returns an error message search cant be blank' do
+        expect(response.body).to match(/Search field can't be blank/)
+      end
+      it 'resturns :bad_request status code 400' do
+        expect(response.status).to eq(400)
+      end
+    end
   end
 end
