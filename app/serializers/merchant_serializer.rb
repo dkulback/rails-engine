@@ -14,4 +14,19 @@ class MerchantSerializer
       }
     }
   end
+
+  def self.most_items(merchants)
+    {
+      "data": merchants.map do |merchant|
+        {
+          "id": merchant.id.to_s,
+          "type": 'items_sold',
+          'attributes': {
+            "name": merchant.name,
+            "count": merchant.sold_items
+          }
+        }
+      end
+    }
+  end
 end

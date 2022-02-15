@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Items API', type: :request do
+RSpec.describe 'Items Merchant API', type: :request do
   # initialize test data
   let!(:merchant) { create(:merchant) }
   let!(:items) { create_list(:item, 1, merchant_id: merchant.id) }

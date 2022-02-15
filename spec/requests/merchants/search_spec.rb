@@ -4,7 +4,7 @@ RSpec.describe 'Merchant Search API', type: :request do
   # initialize test data
 
   describe 'GET api/v1/merchants/find' do
-    it 'returns the best first merchant matching the search' do
+    it 'returns the first merchant matching the search' do
       merchant_1 = Merchant.create!(name: 'Turing')
       merchant_1 = Merchant.create!(name: 'A Merchant')
       merchant_1 = Merchant.create!(name: 'Ring World')
@@ -20,7 +20,7 @@ RSpec.describe 'Merchant Search API', type: :request do
       it 'returns unable to find merchant' do
         expect(response.body).to match(/Unable to find Merchant/)
       end
-      it 'has a status code 404' do
+      it 'has a status code 404 :not_found' do
         expect(response).to have_http_status(404)
       end
     end
