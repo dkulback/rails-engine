@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       resources :merchants, only: %i[index show] do
         resources :items, only: [:index], controller: :merchant_items
       end
+      resources :revenue, only: :index
     end
   end
   namespace :api do
