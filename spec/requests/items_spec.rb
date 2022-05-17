@@ -48,10 +48,9 @@ RSpec.describe 'Items API', type: :request do
   end
   describe 'POST api/v1/items' do
     let(:valid_attributes) do
-      { name: 'Item Nemo Facere', description: 'Sunt eum id eius magni consequuntur delectus verit...', unit_price: 42.91,
-        merchant_id: merchant.id }
+      { name: 'Item Nemo Facere', description: 'Sunt eum id eius magni consequuntur delectus verit...',
+        unit_price: 42.91, merchant_id: merchant.id }
     end
-
     context 'when request attributes are valid' do
       before { post api_v1_items_path, params: valid_attributes }
 
