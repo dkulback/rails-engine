@@ -7,7 +7,7 @@ class Api::V1::Merchants::SearchController < ApplicationController
           data: { message: 'Unable to find Merchant' }
         }, status: 404
       else
-        render json: MerchantSerializer.single_merchant(merchant), status: :ok
+        render json: MerchantSerializer.new(merchant), status: :ok
       end
     else
       render json: { error: { message: "Search field can't be blank'" } }, status: :bad_request
