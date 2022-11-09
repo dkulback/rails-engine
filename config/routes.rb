@@ -7,7 +7,7 @@ Rails.application.routes.draw do
         get '/most_items', to: 'items#index'
       end
       resources :merchants, only: %i[index show] do
-        resources :items, only: [:index], controller: :merchant_items
+        resources :items, only: %i[index show], controller: :merchant_items
       end
       resources :revenue, only: :index
     end
