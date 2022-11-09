@@ -6,4 +6,5 @@ class Item < ApplicationRecord
   def self.search(name)
     where('name ILIKE ?', "%#{name.downcase}%").order(:name)
   end
+
 end

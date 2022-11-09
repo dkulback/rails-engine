@@ -5,7 +5,7 @@ class Merchant < ApplicationRecord
   has_many :customers, through: :invoices
   has_many :transactions, through: :invoices
   def self.search(name)
-    where('name ILIKE ?', "%#{name.downcase}%").order(:name).first
+    where('name ILIKE ?', "%#{name.downcase}%").order(:name)
   end
 
   def self.most_items(qty = 5)
@@ -19,5 +19,9 @@ class Merchant < ApplicationRecord
       .group(:id)
       .order(sold_items: :desc)
       .limit(qty)
+  end
+
+  def item(id)
+    items.find(id)
   end
 end
